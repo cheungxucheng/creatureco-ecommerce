@@ -1,0 +1,99 @@
+// Fixed: Declared language for better accessibility
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        title CreatureCo
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/storefront.css")
+        link(rel="preconnect" href="https://fonts.googleapis.com")
+        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+        link(href="https://fonts.googleapis.com/css2?family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&display=swap" rel="stylesheet")
+    body 
+        header
+            .logo 
+                a(href="/storefront") CreatureCo
+            form.search-bar(action="/search" method="POST")
+                input(name="keyword" id="userInput" type="text", placeholder="Search products..." required)
+                button(type="submit") 🔎
+            .menu
+                button#button-menu(onclick="openMenu()")
+                    img(src="/images/menu.png", alt="menu" width="30" height="30")
+            .menu-open-close.hidden#menu
+                .user-actions-menu
+                    a(href="/" id="auth-link") Login/Register
+                    a(href="/storefront") Home
+                    a(href="/about") About
+                    a(href="/contact") Contact
+                    .cart-icon 
+                        a(href="/checkout") 🛒
+
+            .user-actions
+                a(href="/" id="auth-link") Login/Register
+                a(href="/storefront") Home
+                a(href="/about") About
+                a(href="/contact") Contact
+                .cart-icon 
+                    a(href="/checkout") 🛒
+        .welcome
+            h1(id="welcome") Welcome, Guest!
+        main
+            h2 Latest Products:
+            .product-grid
+                each val, key in products
+                    .product-box
+                        a(href=`/product/${val.id}`)
+                            .product 
+                                img(src=val.imageUrl alt="Image of Product") 
+                                .product-text
+                                    .product-name= val.name 
+                                    .product-price= "$" + val.price
+                                    .product-desc= val.description
+                        //- button(type="button" id="add-to-cart", data-product-id=val.id ) Add to Cart
+
+
+        footer
+            // Optional enhancement: wrapped text in <p> tag for semantics
+            p © 2025 CreatureCo. All rights reserved.
+        // Added: safer JWT decode function to handle URL-safe base64
+        script(src="/scripts/IsAuth.js")
+        script.
+            document.addEventListener("DOMContentLoaded", () => {
+                const button = document.getElementById('add-to-cart');
+
+                button.addEventListener('click', () => {
+                    const productId = button.getAttribute('data-product-id');
+                    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+
+                    if (!token) {
+                        alert('Vous devez être connecté pour ajouter au panier.');
+                        return;
+                    }
+
+                    fetch('/product/addToCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify({ productId: productId })
+                    })
+                    .then(res => {
+                        if (!res.ok) throw new Error('Erreur serveur');
+                        return res.json();
+                    })
+                    .then(data => {
+                        alert(data.message);
+                    })
+                    .catch(err => {
+                        console.error('Erreur lors de l’ajout au panier :', err);
+                        alert('Impossible d’ajouter le produit au panier.');
+                    });
+                });
+            });
+        // No change: Menu toggle remains the same
+        script.
+            function openMenu() {
+                const menu = document.getElementById('menu');
+                menu.classList.toggle('hidden');
+            }

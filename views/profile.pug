@@ -1,0 +1,108 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        title User Profile
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/profile.css")
+        link(rel="preconnect" href="https://fonts.googleapis.com")
+        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+        link(href="https://fonts.googleapis.com/css2?family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&display=swap" rel="stylesheet")
+
+    body
+        header
+            .logo
+                a(href="/storefront") CreatureCo
+            form.search-bar(action="/search" method="POST")
+                input(name="keyword" id="userInput" type="text", placeholder="Search products..." required)
+                button(type="submit") 🔎
+            .menu
+                button#button-menu(onclick="openMenu()")
+                    img(src="/images/menu.png", alt="menu" width="30" height="30")
+            .menu-open-close.hidden#menu
+                .user-actions-menu
+                    a(href="/" id="auth-link") Login/Register
+                    a(href="/storefront") Home
+                    
+                    a(href="/about") About
+                    a(href="/contact") Contact
+                    .cart-icon 
+                        a(href="/checkout") 🛒
+            .user-actions
+                a(href="/" id="auth-link") Login/Register
+                a(href="/storefront") Home
+                
+                a(href="/about") About
+                a(href="/contact") Contact
+                .cart-icon 
+                    a(href="/checkout") 🛒
+
+
+        main.profile-container
+            section.profile-card
+                img.profile-img(src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png", alt="Profile Picture")
+                h2(id="name") name
+                p(id="email") email
+                p(id="desc") Member since: Jan 2023
+
+            section.profile-content
+                .profile-section
+                    h3 Recent Orders
+                    ul
+                        if orders && orders.length
+                            each order, index in orders
+                                if index < 5
+                                    li Order ##{order.id} - $#{order.order_total} - #{order.status} - #{new Date(order.created_at).toLocaleDateString()}
+                        else
+                            li No past orders found.
+
+                .profile-section
+                    h3 Account Settings
+                    .buttons
+                        a(href="/edit") Edit Profile
+                        a(href="/edit-pass") Change Password
+                        button(type="button" onclick="logoutUser()") Logout
+
+        footer.site-footer
+            | © 2025 CreatureCo. All rights reserved.
+        script(src="/scripts/IsAuth.js")
+        script.
+            document.addEventListener("DOMContentLoaded", function () {
+                let token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+                
+                if (token) {
+                    const name = document.getElementById("name");
+                    const email = document.getElementById("email");
+                    const nav = document.getElementById("auth-link");
+                    const user = JSON.parse(atob(token.split(".")[1]));
+
+                    nav.textContent = "My Profile";
+                    nav.href = "/profile";
+                    name.textContent = user.dbres2.firstname + " " + user.dbres2.lastname;
+                    email.textContent = user.dbres2.email;
+                }        
+                else {
+                    window.location.href = '/'; // Redirect to login if error
+                }
+            });
+        script.
+            function logoutUser() {
+                // Clear tokens from localStorage/sessionStorage
+                localStorage.removeItem("authToken");
+                sessionStorage.removeItem("authToken");
+
+                // Optionally, also make a request to the server to clear cookie
+                fetch('/profile/logout', { method: 'POST' })
+                    .then(() => {
+                        window.location.href = '/';
+                    })
+                    .catch(err => {
+                        console.error("Logout error:", err);
+                        window.location.href = '/';
+                    });
+            }
+            function openMenu() {
+                const menu = document.getElementById('menu');
+                menu.classList.toggle('hidden');
+                console.log("frewfr")
+            }

@@ -1,0 +1,245 @@
+body {
+    font-family: 'Ancizar Sans', sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f8f8f8;
+}
+
+header {
+    background: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+a{
+    color: white;
+    text-decoration: none;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.search-bar {
+    display: flex;
+}
+
+.search-bar input {
+    padding: 8px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.search-bar input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.search-bar button {
+    border: #333;
+    flex: 1;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    box-shadow: none;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.cart-icon {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.welcome {
+    margin:auto;
+}
+
+#results {
+    margin-left: 30px;
+}
+
+main {
+    display: flex;
+    flex: 1;
+    padding: 30px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px 60px;
+}
+
+.product-box a {
+    color: black;
+}
+
+.product {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 250px;
+    width: auto;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.product img {
+    width: 100%;
+    max-width: 130px;
+    height: 60%;
+}
+
+
+.product-name {
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+.product-price {
+    color: #27ae60;
+}
+
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.menu { 
+    display: none;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 4px;
+  max-width: 300px;
+  margin-right: 20px;
+  height: 100%;
+  width: 25%;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+legend {
+  font-weight: bold;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+@media (min-width: 601px) {
+    .menu-open-close {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        background: #333;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    main {
+        flex: 1;
+        padding: 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .search-bar {
+        display: none;
+    }
+    .search-bar input {
+        display: none;
+    }
+    .search-bar input:focus {
+        display: none;
+    }
+    .search-bar button {
+        display: none;
+    }
+    .menu {
+        display: block;
+    }
+
+    .menu button {
+        all: unset;
+    }
+    
+    .user-actions {
+        display: none;
+    }
+
+    .user-actions-menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .product-grid {
+        display: flex;
+        flex-wrap: wrap;
+        width: 90%;
+    }
+    .product {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+    .menu-open-close {
+        transition: ease-in 0.5ms;
+        position: absolute;
+        padding-top: 30px;
+        left: 0;
+        top: 60px;
+        width: 100%;
+        height: 100vh;
+        background-color: #333;
+    }
+
+    .hidden {
+        display: none;
+    }
+}
